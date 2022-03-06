@@ -1,10 +1,11 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { Args, Command, CommandOptions } from '@sapphire/framework';
+import { ApplicationCommandRegistry, Args, Command, CommandOptions } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { Type } from '@sapphire/type';
 import { codeBlock, isThenable } from '@sapphire/utilities';
-import type { Message } from 'discord.js';
+import type { CommandInteraction, Interaction, Message } from 'discord.js';
 import { inspect } from 'util';
+import { getGuildIds } from '../../lib/utils';
 
 @ApplyOptions<CommandOptions>({
 	aliases: ['ev'],
@@ -12,9 +13,13 @@ import { inspect } from 'util';
 	quotes: [],
 	preconditions: ['OwnerOnly'],
 	flags: ['async', 'hidden', 'showHidden', 'silent', 's'],
-	options: ['depth']
+	options: ['depth'],
+	chatInputCommand: {
+		register: true,
+		guildIds: getGuildIds(),
+	},
 })
-export class UserCommand extends Command {
+export class EvalCommand extends Command {
 	public async messageRun(message: Message, args: Args) {
 		const code = await args.rest('string');
 
@@ -39,7 +44,32 @@ export class UserCommand extends Command {
 		return send(message, `${output}\n${typeFooter}`);
 	}
 
-	private async eval(message: Message, code: string, flags: { async: boolean; depth: number; showHidden: boolean }) {
+	public async chatInputRun(interaction: CommandInteraction) {
+		const code = interaction.options.getString('code', true);
+
+		const { result, success, type } = await this.eval(interaction, code, {
+			async: interaction.options.getBoolean('async') ?? false,
+			depth: Number(interaction.options.getNumber('depth')) ?? 0,
+			showHidden: interaction.options.getBoolean('showHidden') ?? false,
+		});
+
+		const output = success ? codeBlock('js', result) : `**ERROR**: ${codeBlock('bash', result)}`;
+		if (interaction.options.getBoolean('silent')) return interaction.reply(`||result hidden||`);
+
+		const typeFooter = `**Type**: ${codeBlock('typescript', type)}`;
+
+		if (output.length > 2000) {
+			return interaction.reply({
+				content: `Output was too long... sent the result as a file.\n\n${typeFooter}`,
+				files: [{ attachment: Buffer.from(output), name: 'output.js' }]
+			});
+		}
+
+		return interaction.reply(`${output}\n${typeFooter}`);
+
+	}
+
+	private async eval(message: Message | Interaction, code: string, flags: { async: boolean; depth: number; showHidden: boolean }) {
 		if (flags.async) code = `(async () => {\n${code}\n})();`;
 
 		// @ts-expect-error value is never read, this is so `msg` is possible as an alias when sending the eval.
@@ -71,5 +101,46 @@ export class UserCommand extends Command {
 		}
 
 		return { result, success, type };
+	}
+
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
+		registry.registerChatInputCommand({
+			name: this.name,
+			description: this.description,
+			options: [
+				{
+					name: 'code',
+					description: 'the code to evaluate',
+					type: 'STRING',
+					required: true,
+				},
+				{
+					name: 'depth',
+					description: 'depth descr',
+					type: 'NUMBER',
+					required: false,
+				},
+				{
+					name: 'async',
+					description: 'async descr',
+					type: 'BOOLEAN',
+					required: false,
+				},
+				{
+					name: 'showhidden',
+					description: 'showhidden descr',
+					type: 'BOOLEAN',
+					required: false,
+				},
+				{
+					name: 'silent',
+					description: 'silent descr',
+					type: 'BOOLEAN',
+					required: false,
+				}
+			]
+		}, {
+			guildIds: getGuildIds(),
+		});
 	}
 }

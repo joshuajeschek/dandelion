@@ -3,6 +3,7 @@ import { LogLevel, SapphireClient } from '@sapphire/framework';
 
 const client = new SapphireClient({
 	defaultPrefix: '!',
+	typing: true,
 	regexPrefix: /^(hey +)?bot[,! ]/i,
 	caseInsensitiveCommands: true,
 	logger: {
@@ -19,7 +20,14 @@ const client = new SapphireClient({
 		'GUILD_MESSAGE_REACTIONS',
 		'DIRECT_MESSAGES',
 		'DIRECT_MESSAGE_REACTIONS'
-	]
+	],
+	presence: {
+		activities: [{
+			name: 'nothing 🙁',
+			type: 'LISTENING',
+		}],
+	},
+	loadMessageCommandListeners: true,
 });
 
 const main = async () => {

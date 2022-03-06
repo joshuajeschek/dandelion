@@ -1,6 +1,9 @@
 import { send } from '@sapphire/plugin-editable-commands';
 import { Message, MessageEmbed } from 'discord.js';
 import { RandomLoadingMessage } from './constants';
+import { envParseArray } from './env-parser';
+
+const guildIds = envParseArray('DEVGUILDS', []);
 
 /**
  * Picks a random item from an array
@@ -19,4 +22,12 @@ export function pickRandom<T>(array: readonly T[]): T {
  */
 export function sendLoadingMessage(message: Message): Promise<typeof message> {
 	return send(message, { embeds: [new MessageEmbed().setDescription(pickRandom(RandomLoadingMessage)).setColor('#FF0000')] });
+}
+
+/**
+ * Returns an array with the development guild id, if the environment is 'development'
+ * @returns the array of guildIds used for development
+ */
+export function getGuildIds(): string[] {
+	return guildIds;
 }
