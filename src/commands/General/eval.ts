@@ -115,26 +115,26 @@ export class EvalCommand extends Command {
 						required: true
 					},
 					{
-						name: 'depth',
-						description: 'depth descr',
-						type: 'NUMBER',
-						required: false
-					},
-					{
 						name: 'async',
-						description: 'async descr',
-						type: 'BOOLEAN',
-						required: false
-					},
-					{
-						name: 'showhidden',
-						description: 'showhidden descr',
+						description: 'wether the code is asynchronous',
 						type: 'BOOLEAN',
 						required: false
 					},
 					{
 						name: 'silent',
-						description: 'silent descr',
+						description: 'wether the result should be printed',
+						type: 'BOOLEAN',
+						required: false
+					},
+					{
+						name: 'depth',
+						description: 'depth passed to util.inspect',
+						type: 'NUMBER',
+						required: false
+					},
+					{
+						name: 'showhidden',
+						description: 'showHidden passed to util.inspect',
 						type: 'BOOLEAN',
 						required: false
 					}
