@@ -5,7 +5,7 @@ import { Type } from '@sapphire/type';
 import { codeBlock, isThenable } from '@sapphire/utilities';
 import type { CommandInteraction, Interaction, Message } from 'discord.js';
 import { inspect } from 'util';
-import { getGuildIds } from '../../lib/utils';
+import { guildIds } from '../../lib/constants';
 
 @ApplyOptions<CommandOptions>({
 	aliases: ['ev'],
@@ -16,7 +16,7 @@ import { getGuildIds } from '../../lib/utils';
 	options: ['depth'],
 	chatInputCommand: {
 		register: true,
-		guildIds: getGuildIds(),
+		guildIds: guildIds,
 	},
 })
 export class EvalCommand extends Command {
@@ -140,7 +140,7 @@ export class EvalCommand extends Command {
 				}
 			]
 		}, {
-			guildIds: getGuildIds(),
+			guildIds: guildIds,
 		});
 	}
 }

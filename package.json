@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "dist/index.js",
   "author": "@sapphire",
-  "license": "UNLICENSE",
+  "license": "MIT",
+  "repository": "github:/joshuajeschek/dandelion",
   "dependencies": {
     "@discordjs/collection": "^0.4.0",
     "@sapphire/decorators": "^4.0.2",
