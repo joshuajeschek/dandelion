@@ -9,4 +9,4 @@ export const RandomLoadingMessage = ['Computing...', 'Thinking...', 'Cooking som
 /**
  * guildIds used for development, parsed from .env file
  */
-export const guildIds = envParseArray('GUILDIDS', [])
+export const guildIds = envParseArray('GUILDIDS', []);

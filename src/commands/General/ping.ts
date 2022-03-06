@@ -5,10 +5,10 @@ import type { CommandInteraction, Message } from 'discord.js';
 import { guildIds } from '../../lib/constants';
 
 @ApplyOptions<CommandOptions>({
-	description: 'Get the bot\'s ping',
+	description: "Get the bot's ping",
 	chatInputCommand: {
 		register: true,
-		guildIds: guildIds,
+		guildIds: guildIds
 	}
 })
 export class PingCommand extends Command {
@@ -17,13 +17,13 @@ export class PingCommand extends Command {
 		return send(message, calculateResponse(message, reply));
 	}
 	public async chatInputRun(interaction: CommandInteraction) {
-		const reply = await interaction.reply({content: 'Ping?', fetchReply: true}) as Message;
+		const reply = (await interaction.reply({ content: 'Ping?', fetchReply: true })) as Message;
 		return interaction.editReply(calculateResponse(interaction, reply));
 	}
 }
 
 function calculateResponse(message: Message | CommandInteraction, reply: Message): string {
 	return `Pong! Bot Latency ${Math.round(container.client.ws.ping)}ms. API Latency ${
-		(reply.editedTimestamp || reply.createdTimestamp) - (message.createdTimestamp)
-		}ms.`;
+		(reply.editedTimestamp || reply.createdTimestamp) - message.createdTimestamp
+	}ms.`;
 }

@@ -22,12 +22,14 @@ const client = new SapphireClient({
 		'DIRECT_MESSAGE_REACTIONS'
 	],
 	presence: {
-		activities: [{
-			name: 'nothing 🙁',
-			type: 'LISTENING',
-		}],
+		activities: [
+			{
+				name: 'nothing 🙁',
+				type: 'LISTENING'
+			}
+		]
 	},
-	loadMessageCommandListeners: true,
+	loadMessageCommandListeners: true
 });
 
 const main = async () => {

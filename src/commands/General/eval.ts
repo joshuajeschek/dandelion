@@ -16,8 +16,8 @@ import { guildIds } from '../../lib/constants';
 	options: ['depth'],
 	chatInputCommand: {
 		register: true,
-		guildIds: guildIds,
-	},
+		guildIds: guildIds
+	}
 })
 export class EvalCommand extends Command {
 	public async messageRun(message: Message, args: Args) {
@@ -50,7 +50,7 @@ export class EvalCommand extends Command {
 		const { result, success, type } = await this.eval(interaction, code, {
 			async: interaction.options.getBoolean('async') ?? false,
 			depth: Number(interaction.options.getNumber('depth')) ?? 0,
-			showHidden: interaction.options.getBoolean('showHidden') ?? false,
+			showHidden: interaction.options.getBoolean('showHidden') ?? false
 		});
 
 		const output = success ? codeBlock('js', result) : `**ERROR**: ${codeBlock('bash', result)}`;
@@ -66,7 +66,6 @@ export class EvalCommand extends Command {
 		}
 
 		return interaction.reply(`${output}\n${typeFooter}`);
-
 	}
 
 	private async eval(message: Message | Interaction, code: string, flags: { async: boolean; depth: number; showHidden: boolean }) {
@@ -104,43 +103,46 @@ export class EvalCommand extends Command {
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand({
-			name: this.name,
-			description: this.description,
-			options: [
-				{
-					name: 'code',
-					description: 'the code to evaluate',
-					type: 'STRING',
-					required: true,
-				},
-				{
-					name: 'depth',
-					description: 'depth descr',
-					type: 'NUMBER',
-					required: false,
-				},
-				{
-					name: 'async',
-					description: 'async descr',
-					type: 'BOOLEAN',
-					required: false,
-				},
-				{
-					name: 'showhidden',
-					description: 'showhidden descr',
-					type: 'BOOLEAN',
-					required: false,
-				},
-				{
-					name: 'silent',
-					description: 'silent descr',
-					type: 'BOOLEAN',
-					required: false,
-				}
-			]
-		}, {
-			guildIds: guildIds,
-		});
+		registry.registerChatInputCommand(
+			{
+				name: this.name,
+				description: this.description,
+				options: [
+					{
+						name: 'code',
+						description: 'the code to evaluate',
+						type: 'STRING',
+						required: true
+					},
+					{
+						name: 'depth',
+						description: 'depth descr',
+						type: 'NUMBER',
+						required: false
+					},
+					{
+						name: 'async',
+						description: 'async descr',
+						type: 'BOOLEAN',
+						required: false
+					},
+					{
+						name: 'showhidden',
+						description: 'showhidden descr',
+						type: 'BOOLEAN',
+						required: false
+					},
+					{
+						name: 'silent',
+						description: 'silent descr',
+						type: 'BOOLEAN',
+						required: false
+					}
+				]
+			},
+			{
+				guildIds: guildIds
+			}
+		);
 	}
 }
