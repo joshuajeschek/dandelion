@@ -2,13 +2,13 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Command, CommandOptions, container } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import type { CommandInteraction, Message } from 'discord.js';
-import { guildIds } from '../../lib/constants';
+import { getGuildIds } from '../../lib/env-parser';
 
 @ApplyOptions<CommandOptions>({
 	description: "Get the bot's ping",
 	chatInputCommand: {
 		register: true,
-		guildIds: guildIds
+		guildIds: getGuildIds()
 	}
 })
 export class PingCommand extends Command {
