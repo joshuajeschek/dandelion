@@ -1,36 +1,7 @@
 import './lib/setup';
-import { LogLevel, SapphireClient } from '@sapphire/framework';
+import { DandelionClient } from './DandelionClient';
 
-const client = new SapphireClient({
-	defaultPrefix: '!',
-	typing: true,
-	regexPrefix: /^(hey +)?bot[,! ]/i,
-	caseInsensitiveCommands: true,
-	logger: {
-		level: LogLevel.Debug
-	},
-	shards: 'auto',
-	intents: [
-		'GUILDS',
-		'GUILD_MEMBERS',
-		'GUILD_BANS',
-		'GUILD_EMOJIS_AND_STICKERS',
-		'GUILD_VOICE_STATES',
-		'GUILD_MESSAGES',
-		'GUILD_MESSAGE_REACTIONS',
-		'DIRECT_MESSAGES',
-		'DIRECT_MESSAGE_REACTIONS'
-	],
-	presence: {
-		activities: [
-			{
-				name: 'nothing 🙁',
-				type: 'LISTENING'
-			}
-		]
-	},
-	loadMessageCommandListeners: true
-});
+const client = new DandelionClient();
 
 const main = async () => {
 	try {

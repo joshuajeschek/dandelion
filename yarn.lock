@@ -78,6 +78,34 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@prisma/client@npm:^3.10.0":
+  version: 3.10.0
+  resolution: "@prisma/client@npm:3.10.0"
+  dependencies:
+    "@prisma/engines-version": 3.10.0-50.73e60b76d394f8d37d8ebd1f8918c79029f0db86
+  peerDependencies:
+    prisma: "*"
+  peerDependenciesMeta:
+    prisma:
+      optional: true
+  checksum: c9fe863abfbcecff6b26c2fc4c93de77fd11c8209e91b8e2cba13ba3f0866d228eb5e92fac43e1f75497b652db54cb5e309320c3d51e603a4ecb4125dbf3a872
+  languageName: node
+  linkType: hard
+
+"@prisma/engines-version@npm:3.10.0-50.73e60b76d394f8d37d8ebd1f8918c79029f0db86":
+  version: 3.10.0-50.73e60b76d394f8d37d8ebd1f8918c79029f0db86
+  resolution: "@prisma/engines-version@npm:3.10.0-50.73e60b76d394f8d37d8ebd1f8918c79029f0db86"
+  checksum: ddcb3bfdab61ac74e2df9e57562ccc7f0eb863955c8cf711f52f45572168f65e030e5070dfc9fc2e37d916b97b236576006b5cd56c813257a96b825c598e79fa
+  languageName: node
+  linkType: hard
+
+"@prisma/engines@npm:3.10.0-50.73e60b76d394f8d37d8ebd1f8918c79029f0db86":
+  version: 3.10.0-50.73e60b76d394f8d37d8ebd1f8918c79029f0db86
+  resolution: "@prisma/engines@npm:3.10.0-50.73e60b76d394f8d37d8ebd1f8918c79029f0db86"
+  checksum: 7faa8659dd72e70f9b24be291e3660d086d5b2ee1b6557bf783100a2efaf4f7087882196191c845f96c3953a55ea8bcb03110af98a18e803b90084c0c2211444
+  languageName: node
+  linkType: hard
+
 "@sapphire/async-queue@npm:^1.1.9":
   version: 1.2.0
   resolution: "@sapphire/async-queue@npm:1.2.0"
@@ -571,6 +599,7 @@ __metadata:
   resolution: "dandelion@workspace:."
   dependencies:
     "@discordjs/collection": ^0.4.0
+    "@prisma/client": ^3.10.0
     "@sapphire/decorators": ^4.0.2
     "@sapphire/discord-utilities": ^2.6.0
     "@sapphire/discord.js-utilities": ^4.4.0
@@ -588,9 +617,11 @@ __metadata:
     "@types/node": ^17.0.10
     "@types/ws": ^8.2.2
     discord.js: ^13.6.0
+    dotenv-cli: ^5.0.0
     dotenv-cra: ^3.0.2
     npm-run-all: ^4.1.5
     prettier: ^2.5.1
+    prisma: ^3.10.0
     reflect-metadata: ^0.1.13
     tsc-watch: ^4.6.0
     typescript: ^4.5.5
@@ -672,6 +703,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dotenv-cli@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "dotenv-cli@npm:5.0.0"
+  dependencies:
+    cross-spawn: ^7.0.3
+    dotenv: ^16.0.0
+    dotenv-expand: ^8.0.1
+    minimist: ^1.2.5
+  bin:
+    dotenv: cli.js
+  checksum: 283238fd23eca018f71b1b044f765e45756defaf7457705ad8ac2e5e602fbf092979d16962508f6ea05a2f004d099ee5573add8dc84cd2abe7d6c999d09521da
+  languageName: node
+  linkType: hard
+
 "dotenv-cra@npm:^3.0.2":
   version: 3.0.2
   resolution: "dotenv-cra@npm:3.0.2"
@@ -689,10 +734,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dotenv-expand@npm:^8.0.1":
+  version: 8.0.1
+  resolution: "dotenv-expand@npm:8.0.1"
+  checksum: 872a573d64c5cc1d0773df5822546fa47022124dbbf5d260756e081970dc27adf6b0822db952280b5ba3d175971ca8faf23b64204ee5003588a08152fd5e806e
+  languageName: node
+  linkType: hard
+
 "dotenv@npm:^10.0.0":
   version: 10.0.0
   resolution: "dotenv@npm:10.0.0"
   checksum: f412c5fe8c24fbe313d302d2500e247ba8a1946492db405a4de4d30dd0eb186a88a43f13c958c5a7de303938949c4231c56994f97d05c4bc1f22478d631b4005
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^16.0.0":
+  version: 16.0.0
+  resolution: "dotenv@npm:16.0.0"
+  checksum: 664cebb51f0a9a1d1b930f51f0271e72e26d62feaecc9dc03df39453dd494b4e724809ca480fb3ec3213382b1ed3f791aaeb83569a137f9329ce58efd4853dbf
   languageName: node
   linkType: hard
 
@@ -1332,6 +1391,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"minimist@npm:^1.2.5":
+  version: 1.2.5
+  resolution: "minimist@npm:1.2.5"
+  checksum: 86706ce5b36c16bfc35c5fe3dbb01d5acdc9a22f2b6cc810b6680656a1d2c0e44a0159c9a3ba51fb072bb5c203e49e10b51dcd0eec39c481f4c42086719bae52
+  languageName: node
+  linkType: hard
+
 "minipass-collect@npm:^1.0.2":
   version: 1.0.2
   resolution: "minipass-collect@npm:1.0.2"
@@ -1686,6 +1752,18 @@ __metadata:
   bin:
     prettier: bin-prettier.js
   checksum: 21b9408476ea1c544b0e45d51ceb94a84789ff92095abb710942d780c862d0daebdb29972d47f6b4d0f7ebbfb0ffbf56cc2cfa3e3e9d1cca54864af185b15b66
+  languageName: node
+  linkType: hard
+
+"prisma@npm:^3.10.0":
+  version: 3.10.0
+  resolution: "prisma@npm:3.10.0"
+  dependencies:
+    "@prisma/engines": 3.10.0-50.73e60b76d394f8d37d8ebd1f8918c79029f0db86
+  bin:
+    prisma: build/index.js
+    prisma2: build/index.js
+  checksum: da693ebd69ec5f5a8132a86f1c6e300033a5ea869016e19364f514fdda6143f0d6236982a26b431313f06fecfaa2d1bd82eac3ebbf5b58082271f1a65c8a683d
   languageName: node
   linkType: hard
 
