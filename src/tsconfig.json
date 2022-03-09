@@ -1,0 +1,10 @@
+{
+	"extends": "@sapphire/ts-config",
+    "compilerOptions": {
+      "rootDir": ".",
+      "outDir": "../dist/",
+    },
+    "references": [
+      { "path": "../" }  // needed for package.json
+    ]
+  }

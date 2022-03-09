@@ -28,3 +28,29 @@ export function interactionReplyOrFollowUp(
 	if (interaction.replied) return interaction.followUp(options);
 	return interaction.reply(options);
 }
+
+/**
+ * formats a milliseconds input to the format "W days X hours Y minutes Z seconds"
+ * @param milliseconds uptime of the bot
+ * @returns nicely formatted time information
+ */
+export function millisecondsToTime(milliseconds: number | null): string {
+	if (milliseconds === null) {
+		return 'N/A';
+	}
+	const seconds = Math.round((milliseconds / 1000) % 60);
+	const minutes = Math.round((milliseconds / (1000 * 60)) % 60);
+	const hours = Math.round((milliseconds / (1000 * 60 * 60)) % 24);
+	const days = Math.round((milliseconds / (1000 * 60 * 60 * 24)) % 60);
+
+	if (seconds + minutes + hours + days === 0) {
+		return 'N/A';
+	}
+
+	return (
+		`${days != 0 ? `${days} ${days === 1 ? 'day' : 'days'}, ` : ''}` +
+		`${hours != 0 ? `${hours} ${hours === 1 ? 'hour' : 'hours'}, ` : ''}` +
+		`${minutes != 0 ? `${minutes} ${minutes === 1 ? 'minute' : 'minutes'}, ` : ''}` +
+		`${seconds != 0 ? `${seconds} ${seconds === 1 ? 'second' : 'seconds'}` : ''}`
+	);
+}

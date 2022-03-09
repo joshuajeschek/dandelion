@@ -5,6 +5,8 @@
   "author": "@sapphire",
   "license": "MIT",
   "repository": "github:/joshuajeschek/dandelion",
+  "homepage": "https://www.github.com/joshuajeschek/dandelion",
+  "bugs": "https://github.com/joshuajeschek/dandelion/issues",
   "dependencies": {
     "@discordjs/collection": "^0.4.0",
     "@prisma/client": "^3.10.0",
@@ -22,7 +24,9 @@
     "@sapphire/utilities": "^3.2.1",
     "discord.js": "^13.6.0",
     "dotenv-cra": "^3.0.2",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.13",
+    "node-vibrant": "^3.2.1-alpha.1",
+    "systeminformation": "^5.11.6"
   },
   "devDependencies": {
     "@sapphire/prettier-config": "^1.2.9",
@@ -39,12 +43,12 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "build": "tsc",
-    "watch": "tsc -w",
+    "build": "tsc --build src",
+    "watch": "tsc --build src -w",
     "start": "node dist/index.js",
     "dev": "run-s build start",
     "prod": "NODE_ENV=production run-s build start",
-    "watch:start": "tsc-watch --onSuccess \"node ./dist/index.js\"",
+    "watch:start": "tsc-watch --build src --onSuccess \"node ./dist/index.js\"",
     "format": "prettier --write \"src/**/*.ts\"",
     "prisma:dev": "PRISMA_SCHEMA=dev dotenv -e src/prisma.env npx prisma",
     "prisma:prod": "PRISMA_SCHEMA=prod dotenv -e src/prisma.env npx prisma"
