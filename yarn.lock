@@ -981,6 +981,7 @@ __metadata:
     systeminformation: ^5.11.6
     tsc-watch: ^4.6.0
     typescript: ^4.5.5
+    ytsr: ^3.6.0
   languageName: unknown
   linkType: soft
 
@@ -1916,6 +1917,13 @@ __metadata:
   dependencies:
     dom-walk: ^0.1.0
   checksum: da6437562ea2228041542a2384528e74e22d1daa1a4ec439c165abf0b9d8a63e17e3b8a6dc6e0c731845e85301198730426932a0e813d23f932ca668340c9623
+  languageName: node
+  linkType: hard
+
+"miniget@npm:^4.2.1":
+  version: 4.2.2
+  resolution: "miniget@npm:4.2.2"
+  checksum: 577a7826cbf521b8ecb31906b3dce55c61b35398318a461f3484681572287208b7ec5a40de7b0bf0b7738f21630d015cc39ba3edcfb69146565f1528ff957612
   languageName: node
   linkType: hard
 
@@ -3167,6 +3175,15 @@ __metadata:
   version: 4.0.0
   resolution: "yallist@npm:4.0.0"
   checksum: 343617202af32df2a15a3be36a5a8c0c8545208f3d3dfbc6bb7c3e3b7e8c6f8e7485432e4f3b88da3031a6e20afa7c711eded32ddfb122896ac5d914e75848d5
+  languageName: node
+  linkType: hard
+
+"ytsr@npm:^3.6.0":
+  version: 3.6.0
+  resolution: "ytsr@npm:3.6.0"
+  dependencies:
+    miniget: ^4.2.1
+  checksum: a50bf2ec63239e5e1801502f369ab6a80e2f4bc1e64110f2374ce131b89efc30cbc1149de89aa90d0aee5ea1e1211700a3b36f2d28c806013f0b98807fb5273c
   languageName: node
   linkType: hard
 
