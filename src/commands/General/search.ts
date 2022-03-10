@@ -1,7 +1,16 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { PaginatedMessage } from '@sapphire/discord.js-utilities';
 import { ApplicationCommandRegistry, Args, Command, CommandOptions } from '@sapphire/framework';
-import { CommandInteraction, Message, MessageEmbed } from 'discord.js';
+import {
+	ButtonInteraction,
+	CommandInteraction,
+	Constants,
+	InteractionCollector,
+	Message,
+	MessageComponentInteraction,
+	MessageEmbed,
+	SelectMenuInteraction
+} from 'discord.js';
 import ytsr from 'ytsr';
 import { getGuildIds } from '../../lib/env-parser';
 
@@ -16,13 +25,13 @@ import { getGuildIds } from '../../lib/env-parser';
 export class SearchCommand extends Command {
 	public async messageRun(message: Message, args: Args) {
 		const songs = await this.search(args.getOption('query') || undefined);
-		const pm = await this.getResultMessage(songs);
+		const pm = await this.getResultMessage(songs, message);
 		return pm.run(message);
 	}
 
 	public async chatInputRun(interaction: CommandInteraction) {
 		const songs = await this.search(interaction.options.getString('query') || undefined);
-		const pm = await this.getResultMessage(songs);
+		const pm = await this.getResultMessage(songs, interaction);
 		return pm.run(interaction);
 	}
 
@@ -49,7 +58,36 @@ export class SearchCommand extends Command {
 		return songs;
 	}
 
-	private async getResultMessage(songs: Song[]): Promise<PaginatedMessage> {
+	private addToQueue(
+		interaction: ButtonInteraction | SelectMenuInteraction,
+		collector: InteractionCollector<MessageComponentInteraction>,
+		handler: PaginatedMessage,
+		songs: Song[],
+		guildId?: string | null
+	) {
+		if (!guildId) return;
+		if (
+			!interaction.member ||
+			!('voice' in interaction.member) ||
+			!interaction.member.voice.channel ||
+			interaction.member.voice.channel.type !== 'GUILD_VOICE'
+		)
+			return interaction.reply("Couldn't join your voice channel. Maybe I don't have the correct permissions?");
+		const newConnection = !this.container.bard.isConnected(guildId);
+		if (newConnection && !this.container.bard.connect(interaction.member.voice.channel))
+			return interaction.reply("Couldn't join your voice channel. Maybe I don't have the correct permissions?");
+		this.container.bard.addToQueue(guildId, songs[handler.index]);
+		if (newConnection) this.container.bard.play(guildId);
+		collector.stop();
+		if ('edit' in interaction.message && interaction.message.editable) {
+			interaction.message.edit(this.container.bard.getJukebox(guildId));
+		} else {
+			interaction.channel?.send(this.container.bard.getJukebox(guildId));
+		}
+		return;
+	}
+
+	private async getResultMessage(songs: Song[], ctx: CommandInteraction | Message): Promise<PaginatedMessage> {
 		const pm = new PaginatedMessage({
 			template: { content: 'Please navigate using the arrow buttons and make a selection.' }
 		});
@@ -57,21 +95,21 @@ export class SearchCommand extends Command {
 		// ACTIONS
 		pm.actions.delete('@sapphire/paginated-messages.firstPage');
 		pm.actions.delete('@sapphire/paginated-messages.goToLastPage');
+		const stopAction = pm.actions.get('@sapphire/paginated-messages.stop');
+		if (stopAction && stopAction.type === Constants.MessageComponentTypes.BUTTON) {
+			stopAction.label = 'abort search';
+			stopAction.emoji = '🗑️';
+		}
+		pm.setStopPaginatedMessageCustomIds(['@sapphire/paginated-messages.stop', 'queue']);
 		pm.addAction({
-			type: 2,
+			type: Constants.MessageComponentTypes.BUTTON,
 			label: 'add to queue',
 			style: 'SUCCESS',
 			customId: 'queue',
 			emoji: '➕',
-			run: () => {
-				console.log('ADD TO QUEUE');
-			}
+			disabled: !ctx.guildId,
+			run: ({ interaction, collector, handler }) => this.addToQueue(interaction, collector, handler, songs, ctx.guildId)
 		});
-		const stopAction = pm.actions.get('@sapphire/paginated-messages.stop');
-		if (stopAction && stopAction.type === 2) {
-			stopAction.label = 'abort search';
-			stopAction.emoji = '🗑️';
-		}
 
 		// PAGES
 		songs.forEach((s) => {

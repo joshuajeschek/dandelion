@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { isGuildBasedChannel } from '@sapphire/discord.js-utilities';
 import { container, LogLevel, SapphireClient } from '@sapphire/framework';
 import type { Message } from 'discord.js';
+import { Bard } from './lib/Bard';
 
 export class DandelionClient extends SapphireClient {
 	public constructor() {
@@ -46,6 +47,7 @@ export class DandelionClient extends SapphireClient {
 		const db = new PrismaClient();
 		this.logger.info('connected to database');
 		container.db = db;
+		container.bard = new Bard(container);
 		return super.login(token);
 	}
 
@@ -74,5 +76,6 @@ export class DandelionClient extends SapphireClient {
 declare module '@sapphire/pieces' {
 	interface Container {
 		db: PrismaClient;
+		bard: Bard;
 	}
 }

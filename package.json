@@ -9,6 +9,8 @@
   "bugs": "https://github.com/joshuajeschek/dandelion/issues",
   "dependencies": {
     "@discordjs/collection": "^0.4.0",
+    "@discordjs/opus": "^0.7.0",
+    "@discordjs/voice": "^0.8.0",
     "@prisma/client": "^3.10.0",
     "@sapphire/decorators": "^4.0.2",
     "@sapphire/discord-utilities": "^2.6.0",
@@ -25,8 +27,11 @@
     "@sapphire/utilities": "^3.2.1",
     "discord.js": "^13.6.0",
     "dotenv-cra": "^3.0.2",
+    "ffmpeg-static": "^5.0.0",
     "node-vibrant": "^3.2.1-alpha.1",
+    "play-dl": "^1.9.0",
     "reflect-metadata": "^0.1.13",
+    "sodium": "^3.0.2",
     "systeminformation": "^5.11.6",
     "ytsr": "^3.6.0"
   },
