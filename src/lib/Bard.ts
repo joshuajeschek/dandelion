@@ -26,6 +26,33 @@ export class Bard {
 		return audioPlayer?.state.status === AudioPlayerStatus.AutoPaused || audioPlayer?.state.status === AudioPlayerStatus.Paused;
 	}
 
+	public async updateActivityConcurrently(interval?: number) {
+		interval ||= 10_000;
+		let checkedGuilds: string[] = [];
+		while (true) {
+			await new Promise((r) => setTimeout(r, interval));
+			if (this.queue.size === 0 && checkedGuilds.at(-1)) {
+				this.container.client.user?.setActivity({
+					type: 'LISTENING',
+					name: 'nothing 🙁'
+				});
+				checkedGuilds = [];
+				continue;
+			}
+			if (checkedGuilds.length === this.queue.size) checkedGuilds = [];
+			for (const [guildId, songs] of this.queue) {
+				if (guildId in checkedGuilds) continue;
+				checkedGuilds.push(guildId);
+				this.container.client.user?.setActivity({
+					type: 'LISTENING',
+					name: songs[0].title,
+					url: songs[0].url
+				});
+				break;
+			}
+		}
+	}
+
 	public addToQueue(guildId: string, song: Song) {
 		this.container.logger.info(`queue[${guildId}] - ${song.title}`);
 		if (!this.players.get(guildId)) return;
@@ -39,7 +66,6 @@ export class Bard {
 		if (!audioPlayer) return;
 		if (this.isPaused(guildId, audioPlayer)) return audioPlayer.unpause();
 		const song = this.queue.get(guildId)?.at(0);
-		this.container.logger.debug(song);
 		if (!song) return this.disconnect(guildId);
 		const source = await play.stream(song.url);
 		audioPlayer.play(createAudioResource(source.stream, { inputType: source.type }));
@@ -57,8 +83,8 @@ export class Bard {
 		if (!this.queue.get(guildId)) return;
 		this.queue.get(guildId)?.shift();
 		channel ||= this.jukebox.get(guildId)?.channel as TextChannel;
-		if (channel) this.sendNewJukeBox(guildId, channel, content);
 		await this.play(guildId);
+		if (channel) this.sendNewJukeBox(guildId, channel, content);
 	}
 
 	public connect(channel: VoiceChannel): boolean {
@@ -92,7 +118,7 @@ export class Bard {
 	public async sendNewJukeBox(guildId: string, channel: TextBasedChannel, content?: string) {
 		this.jukebox.get(guildId)?.delete();
 		const jukebox = this.getJukebox(guildId);
-		if (!jukebox.content) jukebox.content = content;
+		jukebox.content ||= content;
 		this.jukebox.set(guildId, await channel.send(jukebox));
 	}
 
@@ -100,7 +126,7 @@ export class Bard {
 		this.container.logger.info(`getJukebox[${guildId}]`);
 		if (!this.players.get(guildId))
 			return {
-				content: 'I am not currently playing something, use `search` to find a song and add it to the queue!'
+				content: 'I am currently not playing something, use `search` to find a song and add it to the queue!'
 			};
 
 		const currentSong = this.queue.get(guildId)?.at(0);

@@ -48,6 +48,7 @@ export class DandelionClient extends SapphireClient {
 		this.logger.info('connected to database');
 		container.db = db;
 		container.bard = new Bard(container);
+		container.bard.updateActivityConcurrently();
 		return super.login(token);
 	}
 
