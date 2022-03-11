@@ -65,25 +65,32 @@ export class SearchCommand extends Command {
 		songs: Song[],
 		guildId?: string | null
 	) {
-		if (!guildId) return;
+		if (!guildId || !interaction.channel) return;
 		if (
 			!interaction.member ||
 			!('voice' in interaction.member) ||
 			!interaction.member.voice.channel ||
 			interaction.member.voice.channel.type !== 'GUILD_VOICE'
-		)
-			return interaction.reply("Couldn't join your voice channel. Maybe I don't have the correct permissions?");
+		) {
+			return interaction.reply({
+				content: 'You have to be in a voice channel for this to work.',
+				ephemeral: true
+			});
+		}
 		const newConnection = !this.container.bard.isConnected(guildId);
-		if (newConnection && !this.container.bard.connect(interaction.member.voice.channel))
-			return interaction.reply("Couldn't join your voice channel. Maybe I don't have the correct permissions?");
+		if (newConnection && !this.container.bard.connect(interaction.member.voice.channel)) {
+			return interaction.reply({
+				content: "Couldn't join your voice channel. Maybe I don't have the correct permissions?",
+				ephemeral: true
+			});
+		}
 		this.container.bard.addToQueue(guildId, songs[handler.index]);
 		if (newConnection) this.container.bard.play(guildId);
 		collector.stop();
 		if ('edit' in interaction.message && interaction.message.editable) {
-			interaction.message.edit(this.container.bard.getJukebox(guildId));
-		} else {
-			interaction.channel?.send(this.container.bard.getJukebox(guildId));
+			interaction.message.edit(`${interaction.user} chose this song:`);
 		}
+		this.container.bard.sendNewJukeBox(guildId, interaction.channel, 'Added new song to queue');
 		return;
 	}
 
@@ -95,6 +102,7 @@ export class SearchCommand extends Command {
 		// ACTIONS
 		pm.actions.delete('@sapphire/paginated-messages.firstPage');
 		pm.actions.delete('@sapphire/paginated-messages.goToLastPage');
+		pm.actions.delete('@sapphire/paginated-messages.goToPage');
 		const stopAction = pm.actions.get('@sapphire/paginated-messages.stop');
 		if (stopAction && stopAction.type === Constants.MessageComponentTypes.BUTTON) {
 			stopAction.label = 'abort search';

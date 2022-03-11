@@ -1,19 +1,20 @@
 import { AudioPlayer, AudioPlayerStatus, createAudioResource, joinVoiceChannel, NoSubscriberBehavior } from '@discordjs/voice';
 import type { Container } from '@sapphire/pieces';
-import { MessageActionRow, MessageButton, MessageEmbed, MessageOptions, VoiceChannel } from 'discord.js';
+import { Message, MessageActionRow, MessageButton, MessageEmbed, MessageOptions, TextBasedChannel, TextChannel, VoiceChannel } from 'discord.js';
 import play from 'play-dl';
-// import ytdl from 'ytdl-core';
 import jukebox from './resources/jukebox.json';
 
 export class Bard {
 	public readonly container;
 	public readonly queue: Map<string, Song[]>;
 	private readonly players: Map<string, AudioPlayer>;
+	private readonly jukebox: Map<string, Message>;
 
 	constructor(container: Container) {
 		this.container = container;
 		this.queue = new Map();
 		this.players = new Map();
+		this.jukebox = new Map();
 	}
 
 	public isConnected(guildId: string): boolean {
@@ -38,6 +39,7 @@ export class Bard {
 		if (!audioPlayer) return;
 		if (this.isPaused(guildId, audioPlayer)) return audioPlayer.unpause();
 		const song = this.queue.get(guildId)?.at(0);
+		this.container.logger.debug(song);
 		if (!song) return this.disconnect(guildId);
 		const source = await play.stream(song.url);
 		audioPlayer.play(createAudioResource(source.stream, { inputType: source.type }));
@@ -50,10 +52,12 @@ export class Bard {
 		audioPlayer.pause();
 	}
 
-	public async skip(guildId: string) {
+	public async skip(guildId: string, channel?: TextBasedChannel, content?: string) {
 		this.container.logger.info(`skip[${guildId}]`);
 		if (!this.queue.get(guildId)) return;
 		this.queue.get(guildId)?.shift();
+		channel ||= this.jukebox.get(guildId)?.channel as TextChannel;
+		if (channel) this.sendNewJukeBox(guildId, channel, content);
 		await this.play(guildId);
 	}
 
@@ -80,8 +84,16 @@ export class Bard {
 
 	public disconnect(guildId: string) {
 		this.container.logger.info(`disconnect[${guildId}]`);
+		this.players.get(guildId)?.stop();
 		this.queue.delete(guildId);
 		this.players.delete(guildId);
+	}
+
+	public async sendNewJukeBox(guildId: string, channel: TextBasedChannel, content?: string) {
+		this.jukebox.get(guildId)?.delete();
+		const jukebox = this.getJukebox(guildId);
+		if (!jukebox.content) jukebox.content = content;
+		this.jukebox.set(guildId, await channel.send(jukebox));
 	}
 
 	public getJukebox(guildId: string): MessageOptions {

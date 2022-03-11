@@ -7,10 +7,8 @@ import type { Interaction } from 'discord.js';
 })
 export class UserEvent extends Listener<typeof Events.InteractionCreate> {
 	public async run(interaction: Interaction) {
-		if (!interaction.isButton() || interaction.customId !== 'bard/skip' || !interaction.guildId) return;
+		if (!interaction.isButton() || interaction.customId !== 'bard/skip' || !interaction.guildId || !interaction.channel) return;
 		if (!this.container.bard.isConnected(interaction.guildId)) return;
-		this.container.bard.skip(interaction.guildId);
-
-		interaction.reply({ content: 'skipped current song', ephemeral: true });
+		this.container.bard.skip(interaction.guildId, interaction.channel, 'Skipped a song');
 	}
 }
