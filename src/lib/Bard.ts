@@ -1,6 +1,16 @@
 import { AudioPlayer, AudioPlayerStatus, createAudioResource, joinVoiceChannel, NoSubscriberBehavior } from '@discordjs/voice';
 import type { Container } from '@sapphire/pieces';
-import { Message, MessageActionRow, MessageButton, MessageEmbed, MessageOptions, TextBasedChannel, TextChannel, VoiceChannel } from 'discord.js';
+import {
+	GuildMember,
+	Message,
+	MessageActionRow,
+	MessageButton,
+	MessageEmbed,
+	MessageOptions,
+	TextBasedChannel,
+	TextChannel,
+	VoiceChannel
+} from 'discord.js';
 import play from 'play-dl';
 import jukebox from './resources/jukebox.json';
 
@@ -53,6 +63,17 @@ export class Bard {
 		}
 	}
 
+	public async canModifyPlayback(member: GuildMember) {
+		if (!this.container.client.guilds.cache.has(member.guild.id))
+			await this.container.client.guilds.fetch({ guild: member.guild.id, force: true });
+		const guild = await this.container.client.guilds.fetch(member.guild.id);
+		return (
+			member.voice.channel?.type === 'GUILD_VOICE' &&
+			member.voice.channel?.permissionsFor(member).has('SPEAK') &&
+			(!this.isConnected(guild.id) || guild.me?.voice.channelId === member.voice.channelId)
+		);
+	}
+
 	public addToQueue(guildId: string, song: Song) {
 		this.container.logger.info(`queue[${guildId}] - ${song.title}`);
 		if (!this.players.get(guildId)) return;
@@ -89,7 +110,7 @@ export class Bard {
 
 	public connect(channel: VoiceChannel): boolean {
 		this.container.logger.info(`connect${channel.guildId}`);
-		if (!channel.joinable || !channel.speakable) return false;
+		if (this.isConnected(channel.guildId)) return false;
 		const connection = joinVoiceChannel({
 			channelId: channel.id,
 			guildId: channel.guildId,

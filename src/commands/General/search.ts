@@ -1,17 +1,21 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { PaginatedMessage } from '@sapphire/discord.js-utilities';
 import { ApplicationCommandRegistry, Args, Command, CommandOptions } from '@sapphire/framework';
+import { codeBlock } from '@sapphire/utilities';
 import {
 	ButtonInteraction,
 	CommandInteraction,
 	Constants,
+	GuildMember,
 	InteractionCollector,
 	Message,
 	MessageComponentInteraction,
 	MessageEmbed,
-	SelectMenuInteraction
+	SelectMenuInteraction,
+	VoiceChannel
 } from 'discord.js';
 import ytsr from 'ytsr';
+import dedent from 'dedent-js';
 import { getGuildIds } from '../../lib/env-parser';
 
 @ApplyOptions<CommandOptions>({
@@ -58,32 +62,30 @@ export class SearchCommand extends Command {
 		return songs;
 	}
 
-	private addToQueue(
+	private async addToQueue(
 		interaction: ButtonInteraction | SelectMenuInteraction,
 		collector: InteractionCollector<MessageComponentInteraction>,
 		handler: PaginatedMessage,
 		songs: Song[],
 		guildId?: string | null
 	) {
-		if (!guildId || !interaction.channel) return;
-		if (
-			!interaction.member ||
-			!('voice' in interaction.member) ||
-			!interaction.member.voice.channel ||
-			interaction.member.voice.channel.type !== 'GUILD_VOICE'
-		) {
+		if (!guildId || !interaction.channel || !interaction.member || !('voice' in interaction.member)) return;
+		if (!(await this.container.bard.canModifyPlayback(interaction.member as GuildMember))) {
 			return interaction.reply({
-				content: 'You have to be in a voice channel for this to work.',
+				content:
+					'Please check that' +
+					codeBlock(
+						'md',
+						dedent`* you are in a voice channel...
+						* you are allowed to speak in that voice channel...
+						* I am in the same voice channel...
+						* or allowed to connect to and speak in that voice channel`
+					),
 				ephemeral: true
 			});
 		}
-		const newConnection = !this.container.bard.isConnected(guildId);
-		if (newConnection && !this.container.bard.connect(interaction.member.voice.channel)) {
-			return interaction.reply({
-				content: "Couldn't join your voice channel. Maybe I don't have the correct permissions?",
-				ephemeral: true
-			});
-		}
+		const newConnection = this.container.bard.connect(interaction.member.voice.channel as VoiceChannel);
+
 		this.container.bard.addToQueue(guildId, songs[handler.index]);
 		if (newConnection) this.container.bard.play(guildId);
 		collector.stop();
