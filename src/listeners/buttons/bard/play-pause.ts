@@ -28,5 +28,6 @@ export class UserEvent extends Listener<typeof Events.InteractionCreate> {
 		}
 
 		paused ? this.container.bard.play(interaction.guildId) : this.container.bard.pause(interaction.guildId);
+		interaction.deferUpdate();
 	}
 }
