@@ -16,16 +16,19 @@ import { getGuildIds } from '../../lib/env-parser';
 })
 export class PrefixCommand extends Command {
 	public async messageRun(message: Message, args: Args) {
-		const arg = message.member?.permissions.has('ADMINISTRATOR') ? args.nextMaybe() : { value: undefined };
+		const arg = message.member?.permissions.has('MANAGE_GUILD') ? args.nextMaybe() : { value: undefined };
 		return send(message, await this.setPrefix(message, arg.value));
 	}
 	public async chatInputRun(interaction: CommandInteraction) {
 		const member = interaction.member;
 		const arg =
-			member?.permissions instanceof Permissions && member.permissions.has('ADMINISTRATOR')
+			member?.permissions instanceof Permissions && member.permissions.has('MANAGE_GUILD')
 				? interaction.options.getString('prefix') || undefined
 				: undefined;
-		return interaction.reply(await this.setPrefix(interaction, arg));
+		return interaction.reply(
+			(await this.setPrefix(interaction, arg)) +
+				'\nNote: The prefix is for normal commands only, not for this kind of command (application command)'
+		);
 	}
 
 	private async setPrefix(ctx: Message | CommandInteraction, arg?: string): Promise<string> {
