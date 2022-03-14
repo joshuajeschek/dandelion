@@ -3,6 +3,7 @@
         "util",
         "commands",
         "db",
-        "bard"
+        "bard",
+        "listeners"
     ]
 }
