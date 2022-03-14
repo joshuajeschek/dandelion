@@ -1,4 +1,4 @@
-import { AudioPlayer, AudioPlayerStatus, createAudioResource, joinVoiceChannel, NoSubscriberBehavior } from '@discordjs/voice';
+import { AudioPlayer, AudioPlayerStatus, createAudioResource, getVoiceConnection, joinVoiceChannel, NoSubscriberBehavior } from '@discordjs/voice';
 import type { Container } from '@sapphire/pieces';
 import {
 	GuildMember,
@@ -119,7 +119,6 @@ export class Bard {
 		const audioPlayer = new AudioPlayer({
 			behaviors: { noSubscriber: NoSubscriberBehavior.Pause }
 		});
-		audioPlayer.on('unsubscribe', () => this.disconnect(channel.guildId));
 		audioPlayer.on('error', () => this.disconnect(channel.guildId));
 		audioPlayer.on<'stateChange'>('stateChange', (_, n) => {
 			if (n.status === 'idle') this.skip(channel.guildId);
@@ -134,6 +133,7 @@ export class Bard {
 		this.players.get(guildId)?.stop();
 		this.queue.delete(guildId);
 		this.players.delete(guildId);
+		getVoiceConnection(guildId)?.destroy();
 	}
 
 	public async sendNewJukeBox(guildId: string, channel: TextBasedChannel, content?: string) {

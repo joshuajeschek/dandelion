@@ -2,6 +2,7 @@
     "conventionalCommits.scopes": [
         "util",
         "commands",
-        "db"
+        "db",
+        "bard"
     ]
 }
