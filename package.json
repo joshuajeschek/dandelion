@@ -51,6 +51,7 @@
   },
   "scripts": {
     "prepare": "husky install",
+    "dr": "node ./bin/dependecyreport.js",
     "build": "tsc --build src",
     "watch": "tsc --build src -w",
     "start": "node dist/index.js",

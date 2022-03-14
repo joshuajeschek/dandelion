@@ -13,7 +13,6 @@ import { join } from 'path';
 import { inspect } from 'util';
 import { srcDir } from './constants';
 import { ApplicationCommandRegistries, RegisterBehavior } from '@sapphire/framework';
-import { generateDependencyReport } from '@discordjs/voice';
 
 // Read env var
 config({ path: join(srcDir, '.env') });
@@ -25,5 +24,3 @@ inspect.defaultOptions.depth = 1;
 colorette.createColors({ useColor: true });
 
 ApplicationCommandRegistries.setDefaultBehaviorWhenNotIdentical(RegisterBehavior.Overwrite);
-
-if (process.env.NODE_ENV === 'development') console.log(generateDependencyReport());
