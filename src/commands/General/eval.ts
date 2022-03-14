@@ -13,11 +13,7 @@ import { getGuildIds } from '../../lib/env-parser';
 	quotes: [],
 	preconditions: ['OwnerOnly'],
 	flags: ['async', 'hidden', 'showHidden', 'silent', 's'],
-	options: ['depth'],
-	chatInputCommand: {
-		register: true,
-		guildIds: getGuildIds()
-	}
+	options: ['depth']
 })
 export class EvalCommand extends Command {
 	public async messageRun(message: Message, args: Args) {
@@ -141,7 +137,8 @@ export class EvalCommand extends Command {
 				]
 			},
 			{
-				guildIds: getGuildIds()
+				guildIds: getGuildIds(),
+				idHints: ['952242231429980250']
 			}
 		);
 	}

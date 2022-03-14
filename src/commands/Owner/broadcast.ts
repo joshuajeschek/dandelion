@@ -7,10 +7,6 @@ import { getOwnerGuildIds } from '../../lib/env-parser';
 
 @ApplyOptions<CommandOptions>({
 	description: 'Broadcast a message to newsletter subscribers',
-	chatInputCommand: {
-		register: true,
-		guildIds: getOwnerGuildIds()
-	},
 	preconditions: ['OwnerOnly']
 })
 export class BroadcastCommand extends Command {
@@ -97,7 +93,8 @@ export class BroadcastCommand extends Command {
 				]
 			},
 			{
-				guildIds: getOwnerGuildIds()
+				guildIds: getOwnerGuildIds(),
+				idHints: ['952242318621167737']
 			}
 		);
 	}

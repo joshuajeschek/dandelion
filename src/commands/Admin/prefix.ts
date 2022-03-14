@@ -7,10 +7,6 @@ import { getGuildIds } from '../../lib/env-parser';
 
 @ApplyOptions<CommandOptions>({
 	description: 'Set the bots prefix in this guild',
-	chatInputCommand: {
-		register: true,
-		guildIds: getGuildIds()
-	},
 	preconditions: ['GuildOnly'],
 	options: ['prefix']
 })
@@ -67,7 +63,8 @@ export class PrefixCommand extends Command {
 				]
 			},
 			{
-				guildIds: getGuildIds()
+				guildIds: getGuildIds(),
+				idHints: ['952242230301704194']
 			}
 		);
 	}

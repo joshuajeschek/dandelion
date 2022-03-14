@@ -20,11 +20,7 @@ import { getGuildIds } from '../../lib/env-parser';
 
 @ApplyOptions<CommandOptions>({
 	description: 'Search for a song on youtube',
-	options: ['query'],
-	chatInputCommand: {
-		register: true,
-		guildIds: getGuildIds()
-	}
+	options: ['query']
 })
 export class SearchCommand extends Command {
 	public async messageRun(message: Message, args: Args) {
@@ -154,7 +150,8 @@ export class SearchCommand extends Command {
 				]
 			},
 			{
-				guildIds: getGuildIds()
+				guildIds: getGuildIds(),
+				idHints: ['952242234537963570']
 			}
 		);
 	}

@@ -11,7 +11,8 @@ import Vibrant from 'node-vibrant';
 	description: "Get information about the bot's status",
 	chatInputCommand: {
 		register: true,
-		guildIds: getGuildIds()
+		guildIds: getGuildIds(),
+		idHints: ['952242317505495051']
 	}
 })
 export class StatusCommand extends Command {

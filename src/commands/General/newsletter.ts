@@ -7,7 +7,8 @@ import { getGuildIds } from '../../lib/env-parser';
 	description: 'Subscribe / Unsubscribe from the newsletter',
 	chatInputCommand: {
 		register: true,
-		guildIds: getGuildIds()
+		guildIds: getGuildIds(),
+		idHints: ['952242232163971072']
 	}
 })
 export class NewsletterCommand extends Command {

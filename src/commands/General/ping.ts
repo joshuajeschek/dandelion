@@ -8,7 +8,8 @@ import { getGuildIds } from '../../lib/env-parser';
 	description: "Get the bot's ping",
 	chatInputCommand: {
 		register: true,
-		guildIds: getGuildIds()
+		guildIds: getGuildIds(),
+		idHints: ['952242233325789194']
 	}
 })
 export class PingCommand extends Command {
