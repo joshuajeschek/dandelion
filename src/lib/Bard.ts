@@ -63,14 +63,17 @@ export class Bard {
 		}
 	}
 
-	public async canModifyPlayback(member: GuildMember) {
+	public async isInValidVC(member: GuildMember) {
 		if (!this.container.client.guilds.cache.has(member.guild.id))
 			await this.container.client.guilds.fetch({ guild: member.guild.id, force: true });
 		const guild = await this.container.client.guilds.fetch(member.guild.id);
+		const vc = member.voice.channel;
 		return (
-			member.voice.channel?.type === 'GUILD_VOICE' &&
-			member.voice.channel?.permissionsFor(member).has('SPEAK') &&
-			(!this.isConnected(guild.id) || guild.me?.voice.channelId === member.voice.channelId)
+			vc?.type === 'GUILD_VOICE' &&
+			vc.joinable &&
+			vc.speakable &&
+			vc.permissionsFor(member).has('SPEAK') &&
+			(!this.isConnected(guild.id) || guild.me?.voice.channelId === vc.id)
 		);
 	}
 

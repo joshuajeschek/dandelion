@@ -66,7 +66,7 @@ export class SearchCommand extends Command {
 		guildId?: string | null
 	) {
 		if (!guildId || !interaction.channel || !interaction.member || !('voice' in interaction.member)) return;
-		if (!(await this.container.bard.canModifyPlayback(interaction.member as GuildMember))) {
+		if (!(await this.container.bard.isInValidVC(interaction.member as GuildMember))) {
 			return interaction.reply({
 				content:
 					'Please check that' +
