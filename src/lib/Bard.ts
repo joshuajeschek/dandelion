@@ -84,11 +84,11 @@ export class Bard {
 		this.queue.get(guildId)?.push(song);
 	}
 
-	public async play(guildId: string) {
+	public async play(guildId: string, skipped?: boolean) {
 		this.container.logger.info(`play[${guildId}]`);
 		const audioPlayer = this.players.get(guildId);
 		if (!audioPlayer) return;
-		if (this.isPaused(guildId, audioPlayer)) return audioPlayer.unpause();
+		if (!skipped && this.isPaused(guildId, audioPlayer)) return audioPlayer.unpause();
 		const song = this.queue.get(guildId)?.at(0);
 		if (!song) return this.disconnect(guildId);
 		const source = await play.stream(song.url);
@@ -106,8 +106,8 @@ export class Bard {
 		this.container.logger.info(`skip[${guildId}]`);
 		if (!this.queue.get(guildId)) return;
 		this.queue.get(guildId)?.shift();
+		await this.play(guildId, true);
 		channel ||= this.jukebox.get(guildId)?.channel as TextChannel;
-		await this.play(guildId);
 		if (channel) this.sendNewJukeBox(guildId, channel, content);
 	}
 
