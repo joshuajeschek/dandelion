@@ -541,6 +541,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash@npm:^4.14.180":
+  version: 4.14.180
+  resolution: "@types/lodash@npm:4.14.180"
+  checksum: fc42ae3473695cac6e91553f832fef8eb51a31c1c0381cafa81b00dc3efe18e279786bdda77caf0b90a8340ba2ba7aa46ae6541d69870565f775d04c89128bc1
+  languageName: node
+  linkType: hard
+
 "@types/node-fetch@npm:2.5.12":
   version: 2.5.12
   resolution: "@types/node-fetch@npm:2.5.12"
@@ -1198,6 +1205,7 @@ __metadata:
     "@sapphire/ts-config": ^3.1.8
     "@sapphire/type": ^2.1.2
     "@sapphire/utilities": ^3.2.1
+    "@types/lodash": ^4.14.180
     "@types/node": ^17.0.10
     "@types/uuid": ^8
     "@types/ws": ^8.2.2
@@ -1207,6 +1215,7 @@ __metadata:
     dotenv-cra: ^3.0.2
     ffmpeg-static: ^5.0.0
     husky: ^7.0.4
+    lodash: ^4.17.21
     node-vibrant: ^3.2.1-alpha.1
     npm-run-all: ^4.1.5
     play-dl: ^1.9.0
@@ -2292,6 +2301,13 @@ __metadata:
     pify: ^3.0.0
     strip-bom: ^3.0.0
   checksum: 8f5d6d93ba64a9620445ee9bde4d98b1eac32cf6c8c2d20d44abfa41a6945e7969456ab5f1ca2fb06ee32e206c9769a20eec7002fe290de462e8c884b6b8b356
+  languageName: node
+  linkType: hard
+
+"lodash@npm:^4.17.21":
+  version: 4.17.21
+  resolution: "lodash@npm:4.17.21"
+  checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
   languageName: node
   linkType: hard
 

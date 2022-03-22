@@ -9,7 +9,8 @@ datasource db {
 
 model Guild {
   id              String @db.VarChar(64) @id @unique
-  prefix          String @db.VarChar(255)
+  prefix          String @db.VarChar(255) @default(dbgenerated("'!'"))
+  skiplimit       Int @default(dbgenerated("1"))
 }
 
 model User {

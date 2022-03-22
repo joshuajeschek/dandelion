@@ -1,0 +1,19 @@
+{
+    "title": "Guild Settings",
+    "description": "Here you can see a list of all the available settings, as well as what they are currently set too.",
+    "fields": [
+        {
+            "name": "prefix",
+            "value": "The prefix that commands should use.\n\n- Does not apply to slash commands (invoked by typing '/' in chat).\n\n*default:* `!`",
+            "inline": true
+        },
+        {
+            "name": "​skiplimit",
+            "value": "The amount of people needed to skip the song that is currently playing.\n\n- If the specified number is higher than the amount of people currently in the voice channel, everybody in the channel has to vote for a song to be skipped.\n- If the specified number is negative, only users with the permission `manage server` can skip songs.\n\n*default:* `1`",
+            "inline": true
+        }
+    ],
+    "footer": {
+        "text": "select one of the options when using the command to change it"
+    }
+}
