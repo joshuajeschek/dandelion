@@ -1,5 +1,7 @@
+import { container } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { CommandInteraction, InteractionReplyOptions, Message, MessageComponentInteraction, MessageEmbed, MessagePayload } from 'discord.js';
+import Vibrant from 'node-vibrant';
 import { RandomLoadingMessage } from './constants';
 
 /**
@@ -53,4 +55,16 @@ export function millisecondsToTime(milliseconds: number | null): string {
 		`${minutes != 0 ? `${minutes} ${minutes === 1 ? 'minute' : 'minutes'}, ` : ''}` +
 		`${seconds != 0 ? `${seconds} ${seconds === 1 ? 'second' : 'seconds'}` : ''}`
 	);
+}
+
+let accentColor: number;
+export async function getAccentColor(): Promise<number> {
+	if (accentColor) return accentColor;
+	// not necessary, since bot users currently always have accentColor=null
+	// if (!this.container.client.user?.accentColor) await this.container.client.user?.fetch(true);
+	// if (this.container.client.user?.accentColor) return this.container.client.user.accentColor;
+	if (!container.client.user) return 3092790;
+	const palette = await Vibrant.from(container.client.user.displayAvatarURL({ format: 'png' })).getPalette();
+	accentColor = palette.Vibrant?.hex ? parseInt(palette.Vibrant?.hex.replaceAll(/[^0-9a-fA-f]/g, ''), 16) : 3092790;
+	return accentColor;
 }

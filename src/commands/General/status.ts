@@ -4,8 +4,7 @@ import { CommandInteraction, Message, MessageActionRow, MessageButton, MessageEm
 import { getGuildIds } from '../../lib/env-parser';
 import si from 'systeminformation';
 import { version, homepage, bugs } from '../../../package.json';
-import { millisecondsToTime } from '../../lib/utils';
-import Vibrant from 'node-vibrant';
+import { getAccentColor, millisecondsToTime } from '../../lib/utils';
 
 @ApplyOptions<CommandOptions>({
 	description: "Get information about the bot's status",
@@ -17,7 +16,6 @@ import Vibrant from 'node-vibrant';
 })
 export class StatusCommand extends Command {
 	private osInfo?: string;
-	private accentColor?: number;
 
 	public async messageRun(message: Message) {
 		return message.reply(await this.getStatusMessage());
@@ -28,12 +26,11 @@ export class StatusCommand extends Command {
 
 	private async getStatusMessage(): Promise<MessageOptions> {
 		this.osInfo ||= await this.getOsInfo();
-		this.accentColor ||= await this.getAccentColor();
 
 		const ping = `${this.container.client.ws.ping ? `${Math.round(this.container.client.ws.ping)} ms` : 'N/A'}`;
 		const embed = new MessageEmbed()
 			.setTitle('Status')
-			.setColor(this.accentColor)
+			.setColor(await getAccentColor())
 			.addField('ping: ', ping)
 			.addField('uptime: ', millisecondsToTime(this.container.client.uptime))
 			.addField('running on:', this.osInfo)
@@ -46,15 +43,6 @@ export class StatusCommand extends Command {
 		);
 
 		return { embeds: [embed], components: [row] };
-	}
-
-	private async getAccentColor(): Promise<number> {
-		// not necessary, since bot users currently always have accentColor=null
-		// if (!this.container.client.user?.accentColor) await this.container.client.user?.fetch(true);
-		// if (this.container.client.user?.accentColor) return this.container.client.user.accentColor;
-		if (!this.container.client.user) return 3092790;
-		const palette = await Vibrant.from(this.container.client.user.displayAvatarURL({ format: 'png' })).getPalette();
-		return palette.Vibrant?.hex ? parseInt(palette.Vibrant?.hex.replaceAll(/[^0-9a-fA-f]/g, ''), 16) : 3092790;
 	}
 
 	private async getOsInfo() {
