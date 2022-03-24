@@ -128,7 +128,7 @@ export class SearchCommand extends Command {
 		if (newConnection) this.container.bard.play(guildId);
 		collector.stop();
 		if ('edit' in interaction.message && interaction.message.editable) {
-			interaction.message.edit(`${interaction.user} chose this song:`);
+			interaction.message.edit(`${interaction.user} chose this ${yt_validate(results[handler.index].url)}:`);
 		}
 		this.container.bard.sendNewJukeBox(guildId, interaction.channel, 'Added new song to queue');
 		return;
