@@ -77,11 +77,17 @@ export class Bard {
 		);
 	}
 
-	public addToQueue(guildId: string, song: Song) {
-		this.container.logger.info(`queue[${guildId}] - ${song.title}`);
+	public addToQueue(guildId: string, toAdd: Song | Playlist) {
+		// TODO
+		this.container.logger.info(`queue[${guildId}] - ${'title' in toAdd ? toAdd.title : 'PLACEHOLDER'}`);
 		if (!this.players.get(guildId)) return;
 		if (!this.queue.get(guildId)) this.queue.set(guildId, []);
-		this.queue.get(guildId)?.push(song);
+		// is playlist
+		if ('estimatedItemCount' in toAdd) {
+			toAdd.songs.forEach((song) => this.addToQueue(guildId, song));
+		} else {
+			this.queue.get(guildId)?.push(toAdd);
+		}
 	}
 
 	public async play(guildId: string, skipped?: boolean) {
