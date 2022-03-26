@@ -12,6 +12,7 @@ import {
 	MessageComponentInteraction,
 	MessageEmbed,
 	SelectMenuInteraction,
+	Util,
 	VoiceChannel
 } from 'discord.js';
 import ytsr from 'ytsr';
@@ -58,13 +59,13 @@ export class SearchCommand extends Command {
 				if (item.type === 'video' && (item.isLive || item.isUpcoming || yt_validate(item.url) !== 'video')) return;
 				if (item.type === 'video')
 					return {
-						title: item.title,
+						title: Util.escapeMarkdown(item.title),
 						id: item.id,
 						url: item.url,
-						author: item.author?.name,
+						author: item.author?.name ? Util.escapeMarkdown(item.author.name) : undefined,
 						uploadedAt: item.uploadedAt ?? undefined,
 						views: item.views ?? undefined,
-						description: item.description ?? undefined,
+						description: item.description ? Util.escapeMarkdown(item.description) : undefined,
 						duration: item.duration ?? undefined,
 						thumbnail: item.bestThumbnail.url ?? undefined
 					} as Song;
@@ -79,17 +80,17 @@ export class SearchCommand extends Command {
 	private getPlaylist(rawPlaylist: YTPlaylist): Playlist {
 		return {
 			id: rawPlaylist.id,
-			title: rawPlaylist.title,
+			title: Util.escapeMarkdown(rawPlaylist.title),
 			url: rawPlaylist.url,
-			author: rawPlaylist.author.name,
+			author: Util.escapeMarkdown(rawPlaylist.author.name),
 			estimatedItemCount: rawPlaylist.video_count,
-			description: rawPlaylist.description,
+			description: Util.escapeMarkdown(rawPlaylist.description),
 			thumbnail: rawPlaylist.thumbnail_url,
 			views: rawPlaylist.view_count,
 			songs: rawPlaylist.videos.flatMap((video) => {
 				if (yt_validate(video.url) !== 'video') return [];
 				return {
-					title: video.title,
+					title: Util.escapeMarkdown(video.title),
 					id: video.id,
 					url: video.url,
 					author: video.author.name,
