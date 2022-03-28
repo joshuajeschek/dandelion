@@ -55,6 +55,7 @@
     "typescript": "^4.5.5"
   },
   "scripts": {
+    "i": "yarn install",
     "prepare": "husky install",
     "dr": "node ./bin/dependecyreport.js",
     "build": "tsc --build src",
@@ -62,6 +63,7 @@
     "start": "node dist/index.js",
     "dev": "run-s build start",
     "prod": "NODE_ENV=production run-s build start",
+    "i:prod": "NODE_ENV=production run-s i build start",
     "watch:start": "tsc-watch --build src --onSuccess \"node ./dist/index.js\"",
     "format": "prettier --write \"src/**/*.ts\"",
     "prisma:dev": "PRISMA_SCHEMA=dev dotenv -e src/prisma.env npx prisma",
