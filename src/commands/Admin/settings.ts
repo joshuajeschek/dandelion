@@ -73,8 +73,8 @@ export class SettingsCommand extends Command {
 				]
 			},
 			{
-				guildIds: getGuildIds()
-				// idHints: ['952242230301704194']
+				guildIds: getGuildIds(),
+				idHints: ['958087700873875476']
 			}
 		);
 	}
