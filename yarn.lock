@@ -1227,7 +1227,7 @@ __metadata:
     lodash: ^4.17.21
     node-vibrant: ^3.2.1-alpha.1
     npm-run-all: ^4.1.5
-    play-dl: ^1.9.0
+    play-dl: ^1.9.2
     prettier: ^2.5.1
     prisma: ^3.10.0
     reflect-metadata: ^0.1.13
@@ -3031,12 +3031,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"play-dl@npm:^1.9.0":
-  version: 1.9.0
-  resolution: "play-dl@npm:1.9.0"
+"play-dl@npm:^1.9.2":
+  version: 1.9.2
+  resolution: "play-dl@npm:1.9.2"
   dependencies:
     play-audio: ^0.5.2
-  checksum: 8a336d1e531b6a437c0dca4dbaaa081fd80ba12f9c835993a6bca1dd796aa8148e6ad1091c8706135d6578fc9ff3fb10ecaec336388cac8df3b02c68c6c85474
+  checksum: 8fe766e21adf800e44e4e221b97a95c2d001b9d553ca22ffe79e5f55f00730bb325c49ff75379f50714610f566b13ac7fc859c51cc1d16998dd934eded7952da
   languageName: node
   linkType: hard
 
