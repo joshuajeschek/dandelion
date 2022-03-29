@@ -168,8 +168,14 @@ export class RecordStore {
 					songsString += `${i + 1}. ${s.songs[i].title}\n`;
 					i++;
 				}
-				// 1024 + 6 because we want to add 6 characters to the end
-				if (i < s.songs.length) songsString = songsString.slice(0, 1030 - songsString.length).replace(/[0-9]+\. .*\n*$/, 'n. ...');
+				// this could be improved as it is possibly and endless loop
+				while (songsString.length > 1024)
+					songsString = songsString
+						.slice(0, 1020)
+						.split('\n')
+						.filter(identity)
+						.map((v, i, a) => (i + 1 === a.length ? '...' : v))
+						.join('\n');
 				if (songsString.length > 0) embed.addField('songs:', songsString);
 			}
 			// add page with embed
