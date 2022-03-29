@@ -36,7 +36,7 @@
     "sodium": "^3.0.2",
     "systeminformation": "^5.11.6",
     "uuid": "latest",
-    "ytfps": "^1.0.5",
+    "ytfps": "1.0.6",
     "ytsr": "^3.6.0"
   },
   "devDependencies": {

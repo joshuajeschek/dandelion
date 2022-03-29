@@ -1236,7 +1236,7 @@ __metadata:
     tsc-watch: ^4.6.0
     typescript: ^4.5.5
     uuid: latest
-    ytfps: ^1.0.5
+    ytfps: 1.0.6
     ytsr: ^3.6.0
   languageName: unknown
   linkType: soft
@@ -4091,12 +4091,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ytfps@npm:^1.0.5":
-  version: 1.0.5
-  resolution: "ytfps@npm:1.0.5"
+"ytfps@npm:1.0.6":
+  version: 1.0.6
+  resolution: "ytfps@npm:1.0.6"
   dependencies:
     axios: ^0.21.1
-  checksum: 9255027effce22770cf8321d95e137eb65b678cac137d75f96c06c3693e370291251c4f8f295708a29316cb6f53cfcd4aa4d8dc0d1b5cb03cf67f8b50e6f3954
+  checksum: 4926465fe40c82cc62539316fb7b4d60558e7cdc50ae73820df71f78a10a4f129731837d3b202ffdb4da37b3af0e62da1ee6156fe2d10823d4c3382f0ed82cc6
   languageName: node
   linkType: hard
 

@@ -84,20 +84,26 @@ export class RecordStore {
 
 		const message = await paginatedMessage.response.edit({ components });
 
-		message
-			.createMessageComponentCollector({
-				filter: (i) => i.customId === 'recordstore/stop' && i.user.id === interaction.user.id,
-				max: 1
-			})
-			.on('end', () => paginatedMessage.collector?.stop());
+		const end = () => {
+			paginatedMessage.collector?.stop();
+			message.edit({ components: [] });
+		};
+		const filter = (id: string) => (i: MessageComponentInteraction) => i.customId === id && i.user.id === interaction.user.id;
 
 		message
 			.createMessageComponentCollector({
-				filter: (i) => i.customId === 'recordstore/add' && i.user.id === interaction.user.id,
+				filter: filter('recordstore/stop'),
 				max: 1
 			})
-			.on('collect', (i) => this.addToQueue(i, items.at(paginatedMessage.index)))
-			.on('end', () => paginatedMessage.collector?.stop());
+			.on('end', end);
+
+		message
+			.createMessageComponentCollector({
+				filter: filter('recordstore/add'),
+				max: 1
+			})
+			.on('end', end)
+			.on('collect', (i) => this.addToQueue(i, items.at(paginatedMessage.index)));
 		return;
 	}
 
@@ -112,7 +118,7 @@ export class RecordStore {
 			id: rawPlaylist.id,
 			title: Util.escapeMarkdown(rawPlaylist.title),
 			url: rawPlaylist.url,
-			author: Util.escapeMarkdown(rawPlaylist.author.name),
+			author: rawPlaylist.author ? Util.escapeMarkdown(rawPlaylist.author.name) : undefined,
 			estimatedItemCount: rawPlaylist.video_count,
 			description: Util.escapeMarkdown(rawPlaylist.description),
 			thumbnail: rawPlaylist.thumbnail_url,

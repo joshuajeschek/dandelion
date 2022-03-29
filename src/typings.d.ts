@@ -14,7 +14,7 @@ type Playlist = {
 	title: string;
 	id: string;
 	url: string;
-	author: string;
+	author?: string;
 	estimatedItemCount: number;
 	description?: string;
 	thumbnail?: string;
