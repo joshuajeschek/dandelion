@@ -1,6 +1,7 @@
 import { isNullishOrEmpty } from '@sapphire/utilities';
 
 let guildIds: string[];
+let ownerGuildIds: string[];
 let owners: string[];
 
 type envArrayKey = 'OWNERS' | 'GUILDIDS' | 'OWNER_GUILDIDS';
@@ -29,8 +30,8 @@ export function getGuildIds() {
  * @returns the array of guildIds
  */
 export function getOwnerGuildIds() {
-	guildIds ||= envParseArray('OWNER_GUILDIDS', []);
-	return guildIds;
+	ownerGuildIds ||= envParseArray('OWNER_GUILDIDS', []);
+	return ownerGuildIds;
 }
 
 /**
