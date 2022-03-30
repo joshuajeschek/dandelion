@@ -9,7 +9,7 @@ import settingsEmbed from './assets/settingsEmbed.json';
 
 @ApplyOptions<CommandOptions>({
 	description: 'Change the bots settings in this guild',
-	preconditions: ['GuildOnly', 'GuildManagerOnly']
+	preconditions: ['GuildOnly', 'OwnerAndGuildManagerOnly']
 })
 export class SettingsCommand extends Command {
 	public async chatInputRun(interaction: CommandInteraction) {
