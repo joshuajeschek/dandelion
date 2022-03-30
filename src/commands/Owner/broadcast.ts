@@ -94,7 +94,7 @@ export class BroadcastCommand extends Command {
 			},
 			{
 				guildIds: getOwnerGuildIds(),
-				idHints: ['952242318621167737']
+				idHints: ['958855216755798036']
 			}
 		);
 	}

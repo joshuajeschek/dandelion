@@ -94,7 +94,7 @@ export class ApplicationCommandsCommand extends Command {
 					.setName(this.name)
 					.setDescription(this.description)
 					.addStringOption((o) => o.setName('guild-id').setDescription('guild id for chat input guild commands').setAutocomplete(true)),
-			{ guildIds: getOwnerGuildIds(), idHints: [] }
+			{ guildIds: getOwnerGuildIds(), idHints: ['958855217498193960'] }
 		);
 	}
 }
