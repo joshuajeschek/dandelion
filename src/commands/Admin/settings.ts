@@ -18,7 +18,8 @@ export class SettingsCommand extends Command {
 		const settings = pickBy({
 			id: interaction.guildId,
 			prefix: interaction.options.getString('prefix', false) ?? undefined,
-			skiplimit: interaction.options.getInteger('skiplimit', false) ?? undefined
+			skiplimit: interaction.options.getInteger('skiplimit', false) ?? undefined,
+			stoplimit: interaction.options.getInteger('stoplimit', false) ?? undefined
 		}) as Guild;
 
 		this.container.db.guild
@@ -67,6 +68,12 @@ export class SettingsCommand extends Command {
 					{
 						name: 'skiplimit',
 						description: 'minimum votes to skip a song',
+						type: 'INTEGER',
+						required: false
+					},
+					{
+						name: 'stoplimit',
+						description: 'minimum votes to stop playback',
 						type: 'INTEGER',
 						required: false
 					}

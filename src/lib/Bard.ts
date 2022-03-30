@@ -117,6 +117,13 @@ export class Bard {
 		if (channel) this.sendNewJukeBox(guildId, channel, content);
 	}
 
+	public stop(guildId: string, channel?: TextBasedChannel, content?: string) {
+		this.container.logger.info(`stop[${guildId}]`);
+		this.disconnect(guildId);
+		channel ||= this.jukebox.get(guildId)?.channel as TextChannel;
+		if (channel) this.sendNewJukeBox(guildId, channel, content);
+	}
+
 	public connect(channel: VoiceChannel): boolean {
 		this.container.logger.info(`connect${channel.guildId}`);
 		if (this.isConnected(channel.guildId)) return false;
@@ -183,8 +190,9 @@ export class Bard {
 			.setLabel(paused ? 'play' : 'pause')
 			.setStyle('PRIMARY');
 		const skipButton = new MessageButton().setCustomId('bard/skip').setEmoji('⏭️').setLabel('skip').setStyle('SECONDARY');
+		const stopButton = new MessageButton().setCustomId('bard/stop').setEmoji('⏹️').setLabel('stop').setStyle('DANGER');
 
-		const row = new MessageActionRow().addComponents(playPauseButton, skipButton);
+		const row = new MessageActionRow().addComponents(playPauseButton, skipButton, stopButton);
 
 		return { content: undefined, embeds: [embed], components: [row] };
 	}
