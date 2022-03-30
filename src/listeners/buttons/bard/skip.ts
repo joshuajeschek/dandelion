@@ -2,6 +2,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener, ListenerOptions } from '@sapphire/framework';
 import type { APIMessage } from 'discord-api-types';
 import { Interaction, Message, MessageActionRow } from 'discord.js';
+import { getOwnerIds } from '../../../lib/env-parser';
 
 @ApplyOptions<ListenerOptions>({
 	event: Events.InteractionCreate
@@ -22,7 +23,11 @@ export class UserEvent extends Listener<typeof Events.InteractionCreate> {
 		// shouldn't happen too often 🤞
 		// if only admin can skip and it is invoked by admin
 		const adminskip =
-			skiplimit < 0 && (typeof interaction.member?.permissions === 'string' || interaction.member?.permissions.has('MANAGE_GUILD'));
+			skiplimit < 0 &&
+			(typeof interaction.member?.permissions === 'string' ||
+				interaction.member?.permissions.has('MANAGE_GUILD') ||
+				getOwnerIds().includes(interaction.user.id));
+
 		// wether single person can skip
 		const singleskip = skiplimit === 1 || skiplimit === 0;
 		if (adminskip || singleskip) {
