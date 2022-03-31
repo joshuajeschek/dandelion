@@ -34,12 +34,7 @@ export class DandelionClient extends SapphireClient {
 					}
 				]
 			},
-			loadMessageCommandListeners: true,
-			hmr: {
-				enabled: process.env.NODE_ENV === 'development',
-				silent: false,
-				awaitWriteFinish: { stabilityThreshold: 500 }
-			}
+			loadMessageCommandListeners: true
 		});
 	}
 
