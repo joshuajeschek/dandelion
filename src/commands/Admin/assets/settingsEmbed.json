@@ -13,6 +13,11 @@
             "inline": true
         },
         {
+            "name": "shufflelimit",
+            "value": "The amount of people needed to shuffle the queue.\n\n- If the specified number is higher than the amount of people currently in the voice channel, everybody in the channel has to vote for the queue to be shuffled.\n- If the specified number is negative, only users with the permission `manage server` can shuffle the queue.\n\n*default:* `2`",
+            "inline": true
+        },
+        {
             "name": "stoplimit",
             "value": "The amount of people needed to stop playback completely.\n\n- If the specified number is higher than the amount of people currently in the voice channel, everybody in the channel has to vote for the bot to leave.\n- If the specified number is negative, only users with the permission `manage server` can make the bot leave before the queue ends.\n\n*default:* `-1`",
             "inline": true
