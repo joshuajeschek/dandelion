@@ -12,6 +12,7 @@ model Guild {
   prefix          String @db.VarChar(255) @default(dbgenerated("'!'"))
   skiplimit       Int @default(dbgenerated("1"))
   stoplimit       Int @default(dbgenerated("-1"))
+  shufflelimit    Int @default(dbgenerated("2"))
 }
 
 model User {

@@ -11,6 +11,7 @@ import {
 	TextChannel,
 	VoiceChannel
 } from 'discord.js';
+import { shuffle as shuffleArray } from 'lodash';
 import play from 'play-dl';
 import jukebox from './resources/jukebox.json';
 
@@ -124,6 +125,16 @@ export class Bard {
 		if (channel) this.sendNewJukeBox(guildId, channel, content);
 	}
 
+	public shuffle(guildId: string, channel?: TextBasedChannel, content?: string) {
+		this.container.logger.info(`shuffle[${guildId}]`);
+		const queue = this.queue.get(guildId);
+		if (!queue || queue.length === 1) return;
+
+		this.queue.set(guildId, queue.slice(0, 1).concat(shuffleArray(queue.slice(1))));
+		channel ||= this.jukebox.get(guildId)?.channel as TextChannel;
+		if (channel) this.sendNewJukeBox(guildId, channel, content);
+	}
+
 	public connect(channel: VoiceChannel): boolean {
 		this.container.logger.info(`connect${channel.guildId}`);
 		if (this.isConnected(channel.guildId)) return false;
@@ -190,9 +201,10 @@ export class Bard {
 			.setLabel(paused ? 'play' : 'pause')
 			.setStyle('PRIMARY');
 		const skipButton = new MessageButton().setCustomId('bard/skip').setEmoji('⏭️').setLabel('skip').setStyle('SECONDARY');
+		const shuffleButton = new MessageButton().setCustomId('bard/shuffle').setEmoji('🔀').setLabel('shuffle').setStyle('SECONDARY');
 		const stopButton = new MessageButton().setCustomId('bard/stop').setEmoji('⏹️').setLabel('stop').setStyle('DANGER');
 
-		const row = new MessageActionRow().addComponents(playPauseButton, skipButton, stopButton);
+		const row = new MessageActionRow().addComponents(playPauseButton, shuffleButton, skipButton, stopButton);
 
 		return { content: undefined, embeds: [embed], components: [row] };
 	}

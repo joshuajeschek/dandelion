@@ -19,7 +19,8 @@ export class SettingsCommand extends Command {
 			id: interaction.guildId,
 			prefix: interaction.options.getString('prefix', false) ?? undefined,
 			skiplimit: interaction.options.getInteger('skiplimit', false) ?? undefined,
-			stoplimit: interaction.options.getInteger('stoplimit', false) ?? undefined
+			stoplimit: interaction.options.getInteger('stoplimit', false) ?? undefined,
+			shufflelimit: interaction.options.getInteger('shufflelimit', false) ?? undefined
 		}) as Guild;
 
 		this.container.db.guild
@@ -74,6 +75,12 @@ export class SettingsCommand extends Command {
 					{
 						name: 'stoplimit',
 						description: 'minimum votes to stop playback',
+						type: 'INTEGER',
+						required: false
+					},
+					{
+						name: 'shufflelimit',
+						description: 'minimum votes to shuffle queue',
 						type: 'INTEGER',
 						required: false
 					}
