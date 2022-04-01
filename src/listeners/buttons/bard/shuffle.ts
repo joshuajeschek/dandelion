@@ -19,7 +19,7 @@ export class UserEvent extends Listener<typeof Events.InteractionCreate> {
 			select: { shufflelimit: true },
 			where: { id: interaction.guildId }
 		})) ?? {
-			shufflelimit: 1
+			shufflelimit: 2
 		};
 
 		// we don't handle if permissions has API format (string) -> just shuffle in that case
